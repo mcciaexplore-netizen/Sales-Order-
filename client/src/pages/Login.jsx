@@ -64,15 +64,7 @@ export default function Login() {
               />
             </div>
             <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="label !mb-0">Password</label>
-                <Link
-                  to="/forgot-password"
-                  className="text-xs text-brand-600 hover:text-brand-700 font-medium"
-                >
-                  Forgot password?
-                </Link>
-              </div>
+              <label className="label">Password</label>
               <input
                 type="password"
                 value={form.password}
@@ -81,6 +73,14 @@ export default function Login() {
                 placeholder="Your password"
                 autoComplete="current-password"
               />
+              <div className="mt-1 text-right">
+                <Link
+                  to="/forgot-password"
+                  className="text-xs text-brand-600 hover:text-brand-700 font-medium"
+                >
+                  Forgot password?
+                </Link>
+              </div>
             </div>
             <button type="submit" disabled={submitting} className="btn-primary w-full">
               {submitting ? 'Logging in...' : 'Log in'}

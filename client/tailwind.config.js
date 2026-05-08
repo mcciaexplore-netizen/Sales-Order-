@@ -4,12 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Saffron — warm orange. Replace these five values to recolour the app.
         brand: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          500: '#2563eb',
-          600: '#1d4ed8',
-          700: '#1e40af',
+          50: '#fff7ed',
+          100: '#ffedd5',
+          500: '#ea580c',
+          600: '#c2410c',
+          700: '#9a3412',
         },
       },
     },
