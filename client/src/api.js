@@ -6,6 +6,19 @@
 
 import bcrypt from 'bcryptjs';
 
+// bcryptjs tries to require Node's `crypto.randomBytes` for salt generation,
+// which Vite externalizes for browser builds — leaving randomBytes undefined
+// and breaking every hash() call (silently producing broken hashes that then
+// fail compare()). Wire its random fallback to Web Crypto so it works in the
+// browser.
+if (typeof globalThis !== 'undefined' && globalThis.crypto?.getRandomValues) {
+  bcrypt.setRandomFallback((len) => {
+    const arr = new Uint8Array(len);
+    globalThis.crypto.getRandomValues(arr);
+    return Array.from(arr);
+  });
+}
+
 // ---------- storage helpers ----------
 
 const STORAGE = {
