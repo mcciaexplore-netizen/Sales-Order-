@@ -7,6 +7,7 @@ export default function ForgotPassword() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
+  const [devLink, setDevLink] = useState('');
 
   const submit = async (e) => {
     e.preventDefault();
@@ -15,7 +16,8 @@ export default function ForgotPassword() {
 
     setSubmitting(true);
     try {
-      await api.post('/auth/forgot-password', { email });
+      const { data } = await api.post('/auth/forgot-password', { email });
+      setDevLink(data?.devLink || '');
       setSent(true);
     } catch (err) {
       setError(err.message);
@@ -33,7 +35,7 @@ export default function ForgotPassword() {
           </div>
           <h1 className="text-2xl font-bold text-slate-900">Reset your password</h1>
           <p className="text-sm text-slate-500 mt-1">
-            We'll email you a link to choose a new password
+            We'll show you a reset link to choose a new password
           </p>
         </div>
 
@@ -44,13 +46,24 @@ export default function ForgotPassword() {
                 If an account exists for <strong>{email}</strong>, we've sent password reset
                 instructions. The link will expire in 1 hour.
               </div>
-              <p className="text-slate-600">
-                Don't see it? Check your spam folder, or wait a few minutes and try again.
-              </p>
-              <p className="text-xs text-slate-500">
-                <strong>Local development:</strong> the reset link is also printed to the backend
-                terminal.
-              </p>
+              {devLink ? (
+                <div className="px-4 py-3 rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-2">
+                  <div>
+                    <strong>Frontend-only mode:</strong> there's no email service to deliver the
+                    link, so use the one below directly.
+                  </div>
+                  <a
+                    href={devLink}
+                    className="block break-all font-mono text-brand-700 hover:text-brand-900 underline"
+                  >
+                    {devLink}
+                  </a>
+                </div>
+              ) : (
+                <p className="text-slate-600">
+                  Don't see it? Check your spam folder, or wait a few minutes and try again.
+                </p>
+              )}
               <div className="pt-2">
                 <Link to="/login" className="btn-secondary w-full">
                   Back to log in
